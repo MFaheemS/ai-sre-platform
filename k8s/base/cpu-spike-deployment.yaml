@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cpu-spike-service
+  labels:
+    app: cpu-spike-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cpu-spike-service
+  template:
+    metadata:
+      labels:
+        app: cpu-spike-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+      - name: cpu-spike-service
+        image: cpu-spike-service:v1
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8000
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cpu-spike-service
+spec:
+  selector:
+    app: cpu-spike-service
+  ports:
+  - port: 8000
+    targetPort: 8000
+  type: NodePort
