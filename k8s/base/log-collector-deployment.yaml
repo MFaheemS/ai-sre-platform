@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-collector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-collector
+  template:
+    metadata:
+      labels:
+        app: log-collector
+    spec:
+      serviceAccountName: log-collector-sa
+      containers:
+      - name: log-collector
+        image: log-collector:v1
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8001
+        env:
+        - name: DB_HOST
+          value: postgres
+        - name: DB_NAME
+          value: logsdb
+        - name: DB_USER
+          value: postgres
+        - name: DB_PASS
+          value: postgres
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: log-collector
+spec:
+  selector:
+    app: log-collector
+  ports:
+  - port: 8001
+    targetPort: 8001
+  type: NodePort
