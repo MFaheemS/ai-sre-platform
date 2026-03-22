@@ -24,11 +24,11 @@
 | Week | Goal | Status |
 |---|---|---|
 | Week 1 | Project foundation + Kubernetes | Done |
-| Week 2 | Monitoring stack | In progress |
-| Week 3 | Log pipeline | Upcoming |
-| Week 4 | Anomaly detection | Upcoming |
-| Week 5 | LLM root cause analysis | Upcoming |
-| Week 6 | Auto remediation | Upcoming |
+| Week 2 | Monitoring stack | Done |
+| Week 3 | Log pipeline | Done |
+| Week 4 | Anomaly detection | Done |
+| Week 5 | LLM root cause analysis | Done |
+| Week 6 | Auto remediation | In progress |
 | Week 7 | CI/CD + Terraform | Upcoming |
 | Week 8 | Polish + demo | Upcoming |
 
