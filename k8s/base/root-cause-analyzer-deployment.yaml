@@ -1,0 +1,40 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: root-cause-analyzer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: root-cause-analyzer
+  template:
+    metadata:
+      labels:
+        app: root-cause-analyzer
+    spec:
+      containers:
+      - name: root-cause-analyzer
+        image: root-cause-analyzer:v3
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8003
+        env:
+        - name: OPENAI_API_KEY
+          value: "YOUR_KEY_HERE"
+        - name: LOG_COLLECTOR_URL
+          value: "http://log-collector:8001"
+        - name: ANOMALY_DETECTOR_URL
+          value: "http://anomaly-detector:8002"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: root-cause-analyzer
+spec:
+  selector:
+    app: root-cause-analyzer
+  ports:
+  - port: 8003
+    targetPort: 8003
+  type: NodePort
