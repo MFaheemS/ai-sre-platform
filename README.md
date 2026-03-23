@@ -13,7 +13,7 @@
 
 | Grafana CPU Spike Dashboard | Prometheus Targets | LLM Root Cause Analysis |
 |---|---|---|
-| ![Grafana](docs/grafana-dashboard.png) | ![Prometheus](docs/prometheus-targets.png) | ![LLM](docs/llm-analysis.png) |
+| ![Grafana](docs/Test.png) | ![Prometheus](docs/prometheus.png) | ![LLM](docs/analyzer.png) |
 
 ---
 
