@@ -31,9 +31,9 @@ jobs:
 
       - name: Run tests
         run: |
-          pip install httpx
+          pip install httpx pytest
           cd services/cpu-spike-service
-          pytest test_app.py -v-
+          pytest test_app.py
 
   build-docker:
     runs-on: ubuntu-latest
