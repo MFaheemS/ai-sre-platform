@@ -15,7 +15,7 @@
 |---|---|---|
 | ![Grafana](docs/Test.png) | ![Prometheus](docs/Prometheus.png) | ![LLM](docs/analyzer.png) |
 
-Other demo images in docs
+>other demo images in docs
 ---
 
 ## What It Does
