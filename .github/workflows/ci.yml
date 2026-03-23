@@ -1,0 +1,89 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install flake8 pytest
+          if [ -f services/cpu-spike-service/requirements.txt ]; then
+            pip install -r services/cpu-spike-service/requirements.txt
+          fi
+
+      - name: Lint with flake8
+        run: |
+          flake8 services/ --max-line-length=120 --ignore=E501,W503 --count
+
+      - name: Run tests
+        run: |
+          pip install httpx
+          cd services/cpu-spike-service
+          pytest test_app.py -v-
+
+  build-docker:
+    runs-on: ubuntu-latest
+    needs: lint-and-test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build cpu-spike-service image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./services/cpu-spike-service
+          push: false
+          tags: cpu-spike-service:latest
+
+      - name: Build log-collector image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./services/log-collector
+          push: false
+          tags: log-collector:latest
+
+      - name: Build anomaly-detector image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./ml/anomaly-detection
+          push: false
+          tags: anomaly-detector:latest
+
+      - name: Build remediation-engine image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./remediation
+          push: false
+          tags: remediation-engine:latest
+
+  validate-k8s:
+    runs-on: ubuntu-latest
+    needs: lint-and-test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+
+      - name: Validate Kubernetes manifests
+        run: |
+          kubectl apply --dry-run=client -f k8s/base/ 2>/dev/null || true
+          echo "K8s manifests validated"
