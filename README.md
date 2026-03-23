@@ -1,5 +1,7 @@
 # AI Self-Healing Infrastructure Platform
 
+![CI](https://github.com/MFaheemS/ai-sre-platform/actions/workflows/ci.yml/badge.svg)
+
 > An AIOps system that automatically monitors, diagnoses, and fixes infrastructure issues using ML anomaly detection and LLM-powered root cause analysis.
 
 ## Architecture
