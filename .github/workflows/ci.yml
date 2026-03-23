@@ -30,7 +30,7 @@ jobs:
       - name: Run tests
         run: |
           cd services/cpu-spike-service
-          python -m pytest test_app.py -v
+          python -m pytest test_app.py
 
   build-docker:
     runs-on: ubuntu-latest
