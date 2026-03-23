@@ -20,10 +20,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install flake8 pytest
-          if [ -f services/cpu-spike-service/requirements.txt ]; then
-            pip install -r services/cpu-spike-service/requirements.txt
-          fi
+          pip install flake8 pytest httpx
+          pip install -r services/cpu-spike-service/requirements.txt
 
       - name: Lint with flake8
         run: |
@@ -31,9 +29,8 @@ jobs:
 
       - name: Run tests
         run: |
-          pip install httpx pytest
           cd services/cpu-spike-service
-          pytest test_app.py
+          python -m pytest test_app.py -v
 
   build-docker:
     runs-on: ubuntu-latest
